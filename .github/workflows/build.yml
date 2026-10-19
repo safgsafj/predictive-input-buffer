@@ -23,7 +23,14 @@ jobs:
         uses: geode-sdk/build-geode-mod@main
         with:
           combine: true
-          sdk: nightly
+          sdk: latest
+          # Bindings main broke 2.2081 builds at commit 90f0dbe (2026-10-18,
+          # "Cocos mappings", which rewrote the generated includes). Pin to its
+          # parent, the last commit that still builds. Remove once fixed upstream.
+          bindings-ref: 13436953582c8bfa6d7a91392c9f575d5bafec83
+          # Build the code generator from the pinned bindings instead of
+          # downloading the prebuilt one, which comes from newer bindings.
+          configure-args: -DSKIP_BUILDING_CODEGEN=OFF
 
   package:
     name: Package builds
